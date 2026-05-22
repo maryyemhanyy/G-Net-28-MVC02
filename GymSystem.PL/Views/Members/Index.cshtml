@@ -10,7 +10,7 @@
         {
             <div id="Alert" class="alert alert-success alert-dismissible fade show">
                 <i class="bi bi-check-circle-fill me-2"></i>
-            Member Created Successfully
+                @TempData["SuccessMessage"]
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
         }
@@ -21,7 +21,7 @@
         {
         <div id="Alert" class="alert alert-danger alert-dismissible fade show">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
-            Member Failed To Create
+               @TempData["ErrorMessage"]
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div> 
         }
@@ -133,8 +133,3 @@
         </div>
     </main>
 </div>
-@section Scripts
-{
-
-    <partial name="_AlertBoxScript.cshtml" />
-}

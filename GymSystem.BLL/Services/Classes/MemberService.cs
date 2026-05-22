@@ -172,7 +172,6 @@ namespace GymSystem.BLL.Services.Classes
             if(await _memberRepository.AnyAsync(m=>m.Email == member.Email && m.Id!=MemberId))  return false;
             if (await _memberRepository.AnyAsync(m => m.Phone == member.Phone && m.Id != MemberId)) return false;
 
-            Member.Name = member.Name;
             Member.Email = member.Email;
             Member.Phone = member.Phone;
             Member.Photo = member.Photo;

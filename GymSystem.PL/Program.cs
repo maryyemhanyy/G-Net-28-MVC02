@@ -23,6 +23,9 @@ namespace GymSystem.PL
 
             builder.Services.AddScoped<IMemberService, MemberService>();
 
+            builder.Services.AddScoped<IPlanService, PlanService>();
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
