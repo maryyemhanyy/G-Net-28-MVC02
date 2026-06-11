@@ -1,3 +1,4 @@
+using GymSystem.BLL;
 using GymSystem.BLL.Services.Classes;
 using GymSystem.BLL.Services.Interfaces;
 using GymSystem.DAL.DbContexts;
@@ -24,6 +25,19 @@ namespace GymSystem.PL
             builder.Services.AddScoped<IMemberService, MemberService>();
 
             builder.Services.AddScoped<IPlanService, PlanService>();
+
+            builder.Services.AddScoped<ITrainerService, TrainerService>();
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+
+            builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfiles()));
+
+            builder.Services.AddScoped<ISessionService, SessionServic>();
+
+            builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+
 
 
             var app = builder.Build();

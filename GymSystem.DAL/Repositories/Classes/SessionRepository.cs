@@ -21,22 +21,23 @@ namespace GymSystem.DAL.Repositories.Classes
         }
         public async Task<IEnumerable<Session>> GetAllSessionsWithTrainerAndCategoryAsync(Expression<Func<Session, bool>>? predicate = null, CancellationToken ct = default)
         {
-            IQueryable<Session> query = _dbContext.Sessions.Where(predicate);
+            IQueryable<Session> query = _dbContext.Sessions.AsNoTracking().Include(s => s.Trainer).Include(s => s.Category);
 
             if (predicate != null)
             {
                 query = query.Where(predicate);
             }
 
-            return await query.ToListAsync();
+            return await query.ToListAsync(ct);
         }
+
+
+        public Task<Session?> GetSessionWithTrainerAndCategoryAsync(int id, CancellationToken ct = default)
+        => _dbContext.Sessions.AsNoTracking().Include(s => s.Category).Include(s => s.Trainer).FirstOrDefaultAsync(s => s.Id == id, ct);
 
         public Task<int> GetCountOfBookedSlotsAsync(int id, CancellationToken ct = default)
             =>_dbContext.Bookings.AsNoTracking().CountAsync(b => b.SessionId == id, ct);
-        
-
-        public Task<Session?> GetSessionWithTrainerAndCategoryAsync(int id, CancellationToken ct = default)
-         => _dbContext.Sessions.AsNoTracking().Include(s => s.Category).FirstOrDefaultAsync(s => s.Id == id, ct);
+           
         
     }
 }

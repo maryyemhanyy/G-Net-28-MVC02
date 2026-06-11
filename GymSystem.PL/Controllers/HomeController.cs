@@ -1,6 +1,7 @@
-using System.Diagnostics;
+using GymSystem.BLL.Services.Interfaces;
 using GymSystem.PL.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace GymSystem.PL.Controllers
 {
@@ -8,14 +9,19 @@ namespace GymSystem.PL.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IAnalyticsService _analyticsService;
+
+        public HomeController(ILogger<HomeController> logger , IAnalyticsService analyticsService)
         {
             _logger = logger;
+            _analyticsService = analyticsService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(CancellationToken ct)
         {
-            return View();
+            var dashboard = await _analyticsService.GetAnalyticsDataAsync(ct);
+
+            return View(dashboard);
         }
 
         public IActionResult Privacy()
