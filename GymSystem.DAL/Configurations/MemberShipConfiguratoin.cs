@@ -13,9 +13,7 @@ namespace GymSystem.DAL.Configurations
     {
         public void Configure(EntityTypeBuilder<MemberShip> builder)
         {
-            builder.Ignore(m => m.Id);
-
-            builder.HasKey(m => new { m.MemberId, m.PlanId });
+            builder.HasKey(m => m.Id);
 
             builder.Property(m => m.CreatedAt).HasColumnName("StartDate").HasDefaultValueSql("GETDATE()");
         }
