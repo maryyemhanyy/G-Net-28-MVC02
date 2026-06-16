@@ -21,6 +21,22 @@ namespace GymSystem.PL
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2);
+
+            })
+             .AddEntityFrameworkStores<GymDbContext>();
+
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/LogIn";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+
+            });
+
             builder.Services.AddDbContext<GymDbContext>(options =>options.UseSqlServer(
             builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -49,18 +65,7 @@ namespace GymSystem.PL
             builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 
 
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-            {
-                options.SignIn.RequireConfirmedAccount = false;
-
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequiredLength = 6;
-            })
-               .AddEntityFrameworkStores<GymDbContext>()
-               .AddDefaultTokenProviders();
+          
 
             var app = builder.Build();
 
@@ -86,7 +91,7 @@ namespace GymSystem.PL
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
+                pattern: "{controller=Account}/{action=LogIn}/{id?}")
                 .WithStaticAssets();
 
             app.Run();
