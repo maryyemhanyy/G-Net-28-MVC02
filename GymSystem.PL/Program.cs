@@ -1,3 +1,11 @@
+using GymSystem.BLL;
+using GymSystem.BLL.Services.Classes;
+using GymSystem.BLL.Services.Interfaces;
+using GymSystem.DAL.DbContexts;
+using GymSystem.DAL.Repositories.Classes;
+using GymSystem.DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
 namespace GymSystem.PL
 {
     public class Program
@@ -8,6 +16,29 @@ namespace GymSystem.PL
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<GymDbContext>(options =>options.UseSqlServer(
+            builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            builder.Services.AddScoped<IMemberService, MemberService>();
+
+            builder.Services.AddScoped<IPlanService, PlanService>();
+
+            builder.Services.AddScoped<ITrainerService, TrainerService>();
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+
+            builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfiles()));
+
+            builder.Services.AddScoped<ISessionService, SessionServic>();
+
+            builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+
+
 
             var app = builder.Build();
 
